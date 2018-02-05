@@ -10,17 +10,11 @@
 <message name="loginResponse">
 <part name="parameters" element="tns:loginResponse" />
 </message>
-<message name="cargarPedidos">
-<part name="parameters" element="tns:cargarPedidos" />
+<message name="getFoto">
+<part name="parameters" element="tns:getFoto" />
 </message>
-<message name="cargarPedidosResponse">
-<part name="parameters" element="tns:cargarPedidosResponse" />
-</message>
-<message name="loginAdmin">
-<part name="parameters" element="tns:loginAdmin" />
-</message>
-<message name="loginAdminResponse">
-<part name="parameters" element="tns:loginAdminResponse" />
+<message name="getFotoResponse">
+<part name="parameters" element="tns:getFotoResponse" />
 </message>
 <message name="registrarUsuario">
 <part name="parameters" element="tns:registrarUsuario" />
@@ -28,11 +22,23 @@
 <message name="registrarUsuarioResponse">
 <part name="parameters" element="tns:registrarUsuarioResponse" />
 </message>
+<message name="finalizarPedido">
+<part name="parameters" element="tns:finalizarPedido" />
+</message>
+<message name="finalizarPedidoResponse">
+<part name="parameters" element="tns:finalizarPedidoResponse" />
+</message>
 <message name="guardarPedido">
 <part name="parameters" element="tns:guardarPedido" />
 </message>
 <message name="guardarPedidoResponse">
 <part name="parameters" element="tns:guardarPedidoResponse" />
+</message>
+<message name="cargarPedidos">
+<part name="parameters" element="tns:cargarPedidos" />
+</message>
+<message name="cargarPedidosResponse">
+<part name="parameters" element="tns:cargarPedidosResponse" />
 </message>
 <message name="actualizar">
 <part name="parameters" element="tns:actualizar" />
@@ -40,40 +46,44 @@
 <message name="actualizarResponse">
 <part name="parameters" element="tns:actualizarResponse" />
 </message>
-<message name="finalizarPedido">
-<part name="parameters" element="tns:finalizarPedido" />
+<message name="loginAdmin">
+<part name="parameters" element="tns:loginAdmin" />
 </message>
-<message name="finalizarPedidoResponse">
-<part name="parameters" element="tns:finalizarPedidoResponse" />
+<message name="loginAdminResponse">
+<part name="parameters" element="tns:loginAdminResponse" />
 </message>
 <portType name="ServicioTienda">
 <operation name="login">
 <input message="tns:login" />
 <output message="tns:loginResponse" />
 </operation>
-<operation name="cargarPedidos">
-<input message="tns:cargarPedidos" />
-<output message="tns:cargarPedidosResponse" />
-</operation>
-<operation name="loginAdmin">
-<input message="tns:loginAdmin" />
-<output message="tns:loginAdminResponse" />
+<operation name="getFoto">
+<input message="tns:getFoto" />
+<output message="tns:getFotoResponse" />
 </operation>
 <operation name="registrarUsuario">
 <input message="tns:registrarUsuario" />
 <output message="tns:registrarUsuarioResponse" />
 </operation>
+<operation name="finalizarPedido">
+<input message="tns:finalizarPedido" />
+<output message="tns:finalizarPedidoResponse" />
+</operation>
 <operation name="guardarPedido">
 <input message="tns:guardarPedido" />
 <output message="tns:guardarPedidoResponse" />
+</operation>
+<operation name="cargarPedidos">
+<input message="tns:cargarPedidos" />
+<output message="tns:cargarPedidosResponse" />
 </operation>
 <operation name="actualizar">
 <input message="tns:actualizar" />
 <output message="tns:actualizarResponse" />
 </operation>
-<operation name="finalizarPedido">
-<input message="tns:finalizarPedido" />
-<output message="tns:finalizarPedidoResponse" />
+<operation name="loginAdmin">
+<input message="tns:loginAdmin" />
+<output message="tns:loginAdminResponse" />
 </operation>
 </portType>
 <binding name="ServicioTiendaPortBinding" type="tns:ServicioTienda">
@@ -87,16 +97,7 @@
 <soap:body use="literal" />
 </output>
 </operation>
-<operation name="cargarPedidos">
-<soap:operation soapAction="" />
-<input>
-<soap:body use="literal" />
-</input>
-<output>
-<soap:body use="literal" />
-</output>
-</operation>
-<operation name="loginAdmin">
+<operation name="getFoto">
 <soap:operation soapAction="" />
 <input>
 <soap:body use="literal" />
@@ -114,7 +115,25 @@
 <soap:body use="literal" />
 </output>
 </operation>
+<operation name="finalizarPedido">
+<soap:operation soapAction="" />
+<input>
+<soap:body use="literal" />
+</input>
+<output>
+<soap:body use="literal" />
+</output>
+</operation>
 <operation name="guardarPedido">
+<soap:operation soapAction="" />
+<input>
+<soap:body use="literal" />
+</input>
+<output>
+<soap:body use="literal" />
+</output>
+</operation>
+<operation name="cargarPedidos">
 <soap:operation soapAction="" />
 <input>
 <soap:body use="literal" />
@@ -132,7 +151,7 @@
 <soap:body use="literal" />
 </output>
 </operation>
-<operation name="finalizarPedido">
+<operation name="loginAdmin">
 <soap:operation soapAction="" />
 <input>
 <soap:body use="literal" />

@@ -34,7 +34,7 @@ public class PedidoDialog extends javax.swing.JDialog {
     int index;
     Producto prod;
     Pedido pedido;
-    private final String RUTA_SIN_FOTO = getClass().getResource("/img/noimg.png").getFile();
+    private final String RUTA_SIN_FOTO = getClass().getResource("/img/sinImagen.png").getFile();
     private static final String RAIZ = Sesion.getRaizFotos();
     private final ProductoTableModel tableModel = new ProductoTableModel();
             
@@ -95,7 +95,7 @@ public class PedidoDialog extends javax.swing.JDialog {
 
         fichaProducto.setBorder(javax.swing.BorderFactory.createTitledBorder("Ficha producto"));
 
-        panelFoto.setBackground(new java.awt.Color(0, 102, 255));
+        panelFoto.setBackground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout panelFotoLayout = new javax.swing.GroupLayout(panelFoto);
         panelFoto.setLayout(panelFotoLayout);
@@ -360,20 +360,20 @@ public class PedidoDialog extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(fichaProducto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnFinalizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(6, 6, 6))
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnAnterior)
                         .addGap(26, 26, 26)
                         .addComponent(btnSiguiente)
-                        .addGap(130, 130, 130))))
+                        .addGap(137, 137, 137))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -525,8 +525,7 @@ public class PedidoDialog extends javax.swing.JDialog {
     }
     
     private void rellenarFicha(Producto prod){
-        
-             
+      
         labNombre.setText(prod.getNombre());
         labMarca.setText(prod.getMarca());
         labFormato.setText(prod.getFormato());
@@ -536,47 +535,10 @@ public class PedidoDialog extends javax.swing.JDialog {
         
         try{
             panelFoto.removeAll();
-            panelFoto.add(cargarFoto(prod)).repaint();
+            panelFoto.add(Rutas.cargarFoto(prod,panelFoto,RUTA_SIN_FOTO));
+            panelFoto.repaint();
         }catch(Exception e){
             System.out.println("Error cargando la foto");
         }
     }
-    
-    private Foto cargarFoto(Producto prod){
-        
-        Foto foto = new Foto(panelFoto, Sesion.getRutaBase()+Rutas.rutaFoto(prod));
-        return foto;
-    }
-
-    /*
-    private void descargarFoto(Producto prod){
-        
-        FileOutputStream fos = null;
-        
-        String rutaFoto = Sesion.getRaizFotos() + Rutas.rutaFoto(prod);
-        Rutas.crearDir(Rutas.adaptarRuta(rutaFoto),true);
-        
-        System.out.println("La ruta de descarga de la foto es ---------> "+rutaFoto);
-        File file = new File(rutaFoto);
-        
-        if(!file.exists() || file.length() == 0){
-            
-            ImageIcon foto = 
-        
-            try {
-                fos = new FileOutputStream(file);
-                fos.write(foto);
-            } catch (FileNotFoundException ex) {
-                Logger.getLogger(PedidoDialog.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
-                Logger.getLogger(PedidoDialog.class.getName()).log(Level.SEVERE, null, ex);
-            }finally{
-                try {
-                    fos.close();
-                } catch (IOException ex) {
-                    Logger.getLogger(PedidoDialog.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }
-    }*/
 }

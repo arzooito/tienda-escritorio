@@ -12,6 +12,10 @@
 
 <xs:element name="finalizarPedidoResponse" type="tns:finalizarPedidoResponse" />
 
+<xs:element name="getFoto" type="tns:getFoto" />
+
+<xs:element name="getFotoResponse" type="tns:getFotoResponse" />
+
 <xs:element name="guardarPedido" type="tns:guardarPedido" />
 
 <xs:element name="guardarPedidoResponse" type="tns:guardarPedidoResponse" />
@@ -66,6 +70,18 @@
 </xs:sequence>
 </xs:complexType>
 
+<xs:complexType name="getFoto">
+<xs:sequence>
+<xs:element name="ruta" type="xs:string" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getFotoResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:base64Binary" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
 <xs:complexType name="actualizar">
 <xs:sequence>
 <xs:element name="fecha" type="xs:string" minOccurs="0" />
@@ -89,6 +105,16 @@
 <xs:sequence />
 </xs:complexType>
 
+<xs:complexType name="guardarPedido">
+<xs:sequence>
+<xs:element name="pedido" type="xs:string" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="guardarPedidoResponse">
+<xs:sequence />
+</xs:complexType>
+
 <xs:complexType name="loginAdmin">
 <xs:sequence>
 <xs:element name="nombre" type="xs:string" minOccurs="0" />
@@ -100,15 +126,5 @@
 <xs:sequence>
 <xs:element name="return" type="xs:boolean" />
 </xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="guardarPedido">
-<xs:sequence>
-<xs:element name="pedido" type="xs:string" minOccurs="0" />
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="guardarPedidoResponse">
-<xs:sequence />
 </xs:complexType>
 </xs:schema>
