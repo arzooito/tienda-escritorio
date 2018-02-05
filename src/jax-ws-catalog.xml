@@ -2,4 +2,6 @@
 <catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
     <system systemId="http://localhost:8080/tienda_WS/ServicioTienda?wsdl" uri="wsdl/localhost_8080/tienda_WS/ServicioTienda.wsdl"/>
     <system systemId="http://localhost:8080/tienda_WS/ServicioTienda?xsd=1" uri="wsdl/localhost_8080/tienda_WS/ServicioTienda.xsd_1.xsd"/>
+    <system systemId="http://localhost:8084/tienda_WS/ServicioTienda?wsdl" uri="wsdl/localhost_8084/tienda_WS/ServicioTienda.wsdl"/>
+    <system systemId="http://localhost:8084/tienda_WS/ServicioTienda?xsd=1" uri="wsdl/localhost_8084/tienda_WS/ServicioTienda.xsd_1.xsd"/>
 </catalog>

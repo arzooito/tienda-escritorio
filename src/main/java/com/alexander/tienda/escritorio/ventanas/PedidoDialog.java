@@ -5,6 +5,7 @@
  */
 package com.alexander.tienda.escritorio.ventanas;
 
+import com.alexander.tienda.escritorio.WS.Ws;
 import com.alexander.tienda.escritorio.componentes.Foto;
 import com.alexander.tienda.escritorio.componentes.ProductoTableModel;
 import com.alexander.tienda.escritorio.componentes.entity.Pedido;
@@ -18,6 +19,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableColumnModel;
@@ -397,11 +399,23 @@ public class PedidoDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnFinalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinalizarActionPerformed
-        // TODO add your handling code here:
+              
+        int confirm;
+        confirm = JOptionPane.showOptionDialog(this,
+                "¿Esta seguro de que quiere finalizar este pedido?",
+                "Finalizar pedido",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE, 
+                null, null, null);
+        if(confirm != 1){
+           long id = Long.parseLong(pedido.getId());
+        Ws.finalizarPedido(Sesion.getUsuario(), Sesion.getPass(),id);
+        }
+        
     }//GEN-LAST:event_btnFinalizarActionPerformed
 
     private void btnAnteriorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnteriorActionPerformed
-       if(index > 0){
+        if(index > 0){
             index--;
             rellenarPedido();
         }else{
@@ -469,8 +483,12 @@ public class PedidoDialog extends javax.swing.JDialog {
         tablaProductos.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
             public void valueChanged(ListSelectionEvent event) {
 
-                prod = tableModel.getProducto(tablaProductos.getSelectedRow());
-                rellenarFicha(prod);
+                Producto producto = tableModel.getProducto(tablaProductos.getSelectedRow());
+                if(producto != null){
+                    prod = producto;
+                    rellenarFicha(prod); 
+                }
+                
             }
         });
     }
@@ -481,7 +499,7 @@ public class PedidoDialog extends javax.swing.JDialog {
     }
     
     private void rellenarPedido(){
-           
+        
         tablaProductos.clearSelection();
         tableModel.clear();
         
@@ -502,7 +520,7 @@ public class PedidoDialog extends javax.swing.JDialog {
                 total += reg.getPrecio() * reg.getUnds();
             }
             labTotal.setText(String.format("%.2f", total));
-            //tablaProductos.setRowSelectionInterval(0, 0);
+            tablaProductos.setRowSelectionInterval(0, 0);
         }
     }
     

@@ -160,8 +160,13 @@ public class ProductoTableModel implements TableModel{
     
     public Producto getProducto(int row){
         
-        Producto prod = (Producto)datos.get(row);
-        return prod;
+        if(row<datos.size() && row > -1){
+            Producto prod = (Producto)datos.get(row);
+            return prod;
+        }else{
+            return null;
+        }
+        
     }
     
     public Object rmProducto(int fila){

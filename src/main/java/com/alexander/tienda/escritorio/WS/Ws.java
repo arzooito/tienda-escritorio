@@ -49,6 +49,18 @@ public class Ws {
         return result;
     }  
     
+    public static void finalizarPedido(String nombre, String password, long idPedido){
+        
+        try { 
+            es.almerimatik.tienda_ws.ServicioTienda_Service service = new es.almerimatik.tienda_ws.ServicioTienda_Service();
+            es.almerimatik.tienda_ws.ServicioTienda port = service.getServicioTiendaPort();
+            port.finalizarPedido(nombre, password, idPedido);
+        } catch (Exception ex) {
+            System.out.println("Error en el servicio finalizarPedido");
+        }
+
+    }
+    
     private static URL urlTiendaWS(){
         URL wsdl = null;
         try {
