@@ -5,7 +5,7 @@
  */
 package com.alexander.tienda.escritorio.componentes;
 
-import es.almerimatik.policia.appolotraffik.escritorio.entity.Resumen;
+import com.alexander.tienda.escritorio.componentes.entity.Pedido;
 import java.awt.Color;
 import java.awt.Component;
 import javax.swing.JList;
@@ -16,30 +16,27 @@ import javax.swing.ListCellRenderer;
  *
  * @author Almerimatik
  */
-public class ResumenListRenderer extends JTextArea implements ListCellRenderer<Resumen>{
+public class PedidoListRenderer extends JTextArea implements ListCellRenderer<Pedido>{
 
-    public ResumenListRenderer() {
+    public PedidoListRenderer() {
         setOpaque(true);
     }
     
     @Override
-    public Component getListCellRendererComponent(JList<? extends Resumen> list, Resumen res, int index, boolean isSelected, boolean cellHasFocus) {
+    public Component getListCellRendererComponent(JList<? extends Pedido> list, Pedido pedido, int index, boolean isSelected, boolean cellHasFocus) {
         
         
-        String salida = res.toString();
+        String salida = pedido.toString();
         setText(salida);
         setLineWrap(true);
         setWrapStyleWord(true);
-        String[] mensajes = res.getMensaje().split("\n");
-        String mensaje = "";
-        for(int i=0; i<mensajes.length; i++){
-            mensaje += mensajes[i] + "<br>";
-        }
         
-        String tooltip =  "<html><b>"+"ID: </b>" + res.getId() +"<br>"+"<b>MATRICULA: </b>"+ res.getMatricula() + "<br><b>" + res.getNombrePista()+"</b>"+ "<br>" + mensaje + "</html>";
+        String tooltip = "<html><b>"+pedido.getId()+"\t"+pedido.getUsuario()+"</b>"+"<br>"
+                +"<b>Fecha: </b>"+ pedido.getFecha() + "<br>" 
+                +"<b>Recogida: </b>"+ pedido.getFechaRecogida()+"\t"+"\"<b>Hora: </b>"+pedido.getHoraRecogida()+"<br>"+"</html>";
         setToolTipText(tooltip);
         
-        String col = res.getColor();
+        String col = pedido.color();      
         Color fondo = Color.decode("#"+col);
         
         if (isSelected) {           
@@ -50,8 +47,7 @@ public class ResumenListRenderer extends JTextArea implements ListCellRenderer<R
             setBackground(fondo);
             setForeground(list.getForeground());
         }
-        
-        
+              
         return this;
     }
     

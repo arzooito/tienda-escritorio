@@ -5,6 +5,7 @@
  */
 package com.alexander.tienda.escritorio.ventanas;
 
+import com.alexander.tienda.escritorio.WS.Ws;
 import com.alexander.tienda.escritorio.utils.Sesion;
 import javax.swing.JOptionPane;
 
@@ -140,27 +141,19 @@ public class LoginDialog extends javax.swing.JDialog {
 
         if(nombre != "" && password != ""){
             
-          String xml = Ws.obtenerLogin(nombre, password);
-//          String xml = "<usuario numero=\"123\"><entidades><entidad id=\"4064\" token=\"unDnB\">AYUNTAMIENTO DE MOJACAR</entidad><entidad id=\"4102\" token=\"NrLA\">AYUNTAMIENTO DE VÍCAR</entidad><entidad id=\"999999\" token=\"9Ua1\">DESARROLLO</entidad></entidades></usuario>";
+            boolean registrado = Ws.login(nombre, password);
             
-            if(xml != null){
-                UsuarioXML user = new UsuarioXML(xml);
-                if(user.isUser()){
-                    Sesion.setUsuarioXML(user);
-                    Sesion.setUsuario(nombre);
-                    Sesion.setNumeroUsuario(user.getNumUser());   
-                    dispose();
-                }else{
-                    JOptionPane.showMessageDialog(this,"El usuario y/o la contraseña no son válidos","Alerta",JOptionPane.WARNING_MESSAGE);
-                    limpiarCampos();
-                }
+            if(registrado){
+                Sesion.setUsuario(nombre);
+                Sesion.setPass(password);
+                dispose();
             }else{
-                JOptionPane.showMessageDialog(this,"No se ha podido acceder a la BD de Appolo. Intentelo de nuevo mas tarde","Error",JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this,"El usuario y/o la contraseña no son válidos","Alerta",JOptionPane.WARNING_MESSAGE);
+                limpiarCampos();
             }
+            
         }else{
             JOptionPane.showMessageDialog(this,"Debe introducir un nombre y contraseña","Alerta",JOptionPane.WARNING_MESSAGE);
         }              
-
     } 
-    
 }

@@ -5,22 +5,20 @@
  */
 package com.alexander.tienda.escritorio.ventanas;
 
-import es.almerimatik.policia.appolotraffik.escritorio.componentes.PrincipalVListener;
-import es.almerimatik.policia.appolotraffik.escritorio.componentes.ResumenListRenderer;
-import es.almerimatik.policia.appolotraffik.escritorio.entity.Resumen;
-import es.almerimatik.policia.appolotraffik.escritorio.utils.GestorXML;
-import es.almerimatik.policia.appolotraffik.escritorio.utils.Sesion;
-import static es.almerimatik.policia.appolotraffik.escritorio.utils.Sounds.getSound;
-import static es.almerimatik.policia.appolotraffik.escritorio.utils.Sounds.playSound;
-import es.almerimatik.policia.appolotraffik.escritorio.utils.UsuarioXML;
-import es.almerimatik.policia.appolotraffik.escritorio.ws.Ws;
+import com.alexander.tienda.escritorio.componentes.PrincipalVListener;
+import com.alexander.tienda.escritorio.utils.XML;
+import com.alexander.tienda.escritorio.componentes.PedidoListRenderer;
+import com.alexander.tienda.escritorio.utils.Sesion;
+import static com.alexander.tienda.escritorio.utils.Sounds.getSound;
+import static com.alexander.tienda.escritorio.utils.Sounds.playSound;
+import com.alexander.tienda.escritorio.WS.Ws;
+import com.alexander.tienda.escritorio.componentes.entity.Pedido;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -37,10 +35,9 @@ import org.dipalme.policia.bd.traffik.EstadoVehiculo;
 public class VentanaPrincipal extends javax.swing.JFrame {
 
     private DefaultListModel listModel = new DefaultListModel();
-    private List<Resumen> listaResumen = new LinkedList<>();
-    private List<String> listaMatriculas = new LinkedList<>();
+    private List<Pedido> listaPedidos = new LinkedList<>();
     List<EstadoVehiculo> listaEstado = null;
-    private ResumenListRenderer renderer = new ResumenListRenderer();
+    private PedidoListRenderer renderer = new PedidoListRenderer();
     private int anchoPantalla = java.awt.Toolkit.getDefaultToolkit().getScreenSize().width;
     private int altoPantalla = java.awt.Toolkit.getDefaultToolkit().getScreenSize().height;
     private Timer timer;
@@ -203,7 +200,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     private void listaAvisosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listaAvisosMouseClicked
         int index = listaAvisos.getSelectedIndex();
-        ventanaInfo(index);
+        ventanaPedido(index);
     }//GEN-LAST:event_listaAvisosMouseClicked
 
     private void btnMiniActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMiniActionPerformed
@@ -284,51 +281,51 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton btnSettings;
     private javax.swing.JLabel labelNumeroAlertas;
     private javax.swing.JLabel labelTitulo;
-    private javax.swing.JList<Resumen> listaAvisos;
+    private javax.swing.JList<Pedido> listaAvisos;
     private javax.swing.JPanel panelCabecera;
     // End of variables declaration//GEN-END:variables
 
     private void rellenarModelo(){
-                
-        String xml = Ws.obtenerResumenesXml();
-//        String xml = xmlPrueba();
-        List<Resumen>listaAux = GestorXML.obtenerMapaResumenes(GestorXML.getDocumento(xml));
-        List<Resumen>listaTemp = new LinkedList<>();
+            
+        String nombre = Sesion.getUsuario();
+        String password = Sesion.getPass();
+        
+        String xml = Ws.getPedidos(nombre, password);
+        List<Pedido>listaAux = XML.getPedidos(XML.getDocumento(xml));
+        List<Pedido>listaTemp = new LinkedList<>();
         
         ///USAR ITERADORES PARA EVITAR ERRORES DE CONCURRENCIA///
-        Iterator<Resumen> iterator = listaAux.iterator();
+        Iterator<Pedido> iterator = listaAux.iterator();
 	while (iterator.hasNext()) {
-            Resumen res = iterator.next();
-            if(!listaResumen.contains(res)){
-                listaResumen.add(res);
-                listaMatriculas.add(res.getMatricula());
-                listModel.addElement(res);
+            Pedido pedido = iterator.next();
+            if(!listaPedidos.contains(pedido)){
+                listaPedidos.add(pedido);
+                listModel.addElement(pedido);
                 listaEstado = null;
                 alertaNueva();
             }
 	}
         
-        iterator = listaResumen.iterator();
+        iterator = listaPedidos.iterator();
 	while (iterator.hasNext()) {
-            Resumen res = iterator.next();
-            if(!listaAux.contains(res)){
-                listaTemp.add(res);
-                listaMatriculas.remove(res.getMatricula());
-                listModel.removeElement(res);
+            Pedido pedido = iterator.next();
+            if(!listaAux.contains(pedido)){
+                listaTemp.add(pedido);
+                listModel.removeElement(pedido);
                 listaEstado = null;
                 alertaCaduca();
             }
 	}
         
-        for(Resumen res : listaTemp){
-            if(listaResumen.contains(res)){
-                listaResumen.remove(res);
+        for(Pedido pedido : listaTemp){
+            if(listaPedidos.contains(pedido)){
+                listaPedidos.remove(pedido);
             }
         }
         
         listaTemp.clear();
             
-        labelNumeroAlertas.setText(""+listaResumen.size());
+        labelNumeroAlertas.setText(""+listaPedidos.size());
         resize();
     }
     
@@ -406,12 +403,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             if(nombreUsuario == null){
                 LoginDialog loginDialog = new LoginDialog(this,true);
                 loginDialog.setVisible(true);
-            }else if (Sesion.getIdEntidad() == null) {
-                LoginEntidadDialog loginEntidad = new LoginEntidadDialog(this,true);
-                loginEntidad.setVisible(true);
-            }else {
-                Sesion.colores();
-                Sesion.direcciones();
+            }else{
                 rellenarModelo();
                 initBucle();
                 setVisible(true);
@@ -425,67 +417,26 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         
         System.out.println("Autologin activado");
         String nombre = Sesion.getUsuarioAuto();
-        String password = Sesion.getPasswordAuto();
-        String idEntidadAut = Sesion.getIdEntidadAuto();
-        long idEntidad;
-        String nombreEntidad;
-        int index;
-        
-        UsuarioXML user;
-        ArrayList<String> idEntidades;
-        ArrayList<String> nombreEntidades;
+        String password = Sesion.getPasswordAuto();       
 
         System.out.println("Login para el usuario \""+nombre+"\"");
         if(nombre != "" && password != ""){
             
-          String xml = Ws.obtenerLogin(nombre, password);
+          boolean registrado = Ws.login(nombre, password);
             
-            if(xml != null){
-                user = new UsuarioXML(xml);
-                if(user.isUser()){
-                    Sesion.setUsuarioXML(user);
-                    Sesion.setUsuario(nombre);
-                    Sesion.setNumeroUsuario(user.getNumUser());
-                    Sesion.setPass(password);
-                    System.out.println("Establecido nombre de usuario como \""+nombre+"\"");
-                    System.out.println("Establecido numero de usuario como \""+user.getNumUser()+"\"");
-                    
-                    idEntidades = user.getIds();
-                    nombreEntidades = user.getNombres();
-                    index = buscarEnLista(idEntidades, idEntidadAut);
-                    
-                    if(index > -1){
-                        idEntidad = Long.valueOf(idEntidadAut);
-                        nombreEntidad = nombreEntidades.get(index);
+            if(registrado){
+                Sesion.setUsuario(nombre);
+                Sesion.setPass(password);
+                System.out.println("Establecido nombre de usuario como \""+nombre+"\"");
 
-                        Sesion.setEntidadNombre(nombreEntidad);
-                        Sesion.setIdEntidad(idEntidad);
-                        System.out.println("Establecido id de entidad como \""+idEntidad+"\"");
-                        System.out.println("Establecido nombre de entidad como \""+nombreEntidad+"\"");
-                    }else{
-                        System.out.println("El usuario no pertenece a la entidad seleccionada. Seleccione otra");
-                    }
-                }else{
-                    System.out.println("El usuario y/o la contraseña no son válidos");
-                } 
-            }
+            }else{
+                System.out.println("El usuario y/o la contraseña no son válidos");
+            } 
         }
         
         login();
     }
-    
-    public int buscarEnLista(ArrayList<String> lista, String cadena){
-        
-        int index = -1;
-        for(int n=0; n<lista.size();n++ ){    
-            if(lista.get(n).equals(cadena)){
-                index = n;
-                return index;
-            }
-        }
-        return index;
-    }
-    
+       
     private void initBucle(){
         
         timer = new Timer (30000, new ActionListener () 
@@ -499,107 +450,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         timer.start();
     }
     
-    private String xmlPrueba(){
-        
-        String xmlPrueba="<resumenes>"
-                            + "<resumen>"
-                                + "<id>142</id>"
-                                + "<matricula>8765CPM</matricula>"
-                                + "<nombrePista>Camara de prueba Almerimatik</nombrePista>"
-                                + "<idPista>1</idPista><idTraza>15031</idTraza>"
-                                + "<mensaje>"
-                                    + "La I.T.V. podría no estar en vigor desde 13/09/2017\n" 
-                                + "</mensaje>"
-                                + "<fechaHora>25-09-2017 17:41</fechaHora>"
-                                + "<caducidad>29-09-2017 01:41</caducidad>"
-                                + "<fechaFin>(fecha vacia)</fechaFin>"
-                                + "<idPrioridad>1</idPrioridad>"
-                            + "</resumen>"
-                            + "<resumen>"
-                                + "<id>146</id>"
-                                + "<matricula>8948BGF</matricula>"
-                                + "<nombrePista>Camara de prueba Almerimatik</nombrePista>"
-                                + "<idPista>1</idPista>"
-                                + "<idTraza>15058</idTraza>"
-                                + "<mensaje>"
-                                    + "El vehículo podría tener un embargo\n" 
-                                    + "La I.T.V. podría no estar en vigor desde 11/04/2017\n" 
-                                + "</mensaje>"
-                                + "<fechaHora>25-09-2017 17:44</fechaHora>"
-                                + "<caducidad>29-09-2017 01:44</caducidad>"
-                                + "<fechaFin>(fecha vacia)</fechaFin>"
-                                + "<idPrioridad>3</idPrioridad>"
-                            + "</resumen>"
-                            + "<resumen>"
-                                + "<id>147</id>"
-                                + "<matricula>L3631AB</matricula>"
-                                + "<nombrePista>Camara de prueba Almerimatik</nombrePista>"
-                                + "<idPista>1</idPista><idTraza>15075</idTraza>"
-                                + "<mensaje>"
-                                    + "Vehículo con baja sin finalizar según datos DGT desde 17/06/2010\n" 
-                                    + "La I.T.V. podría no estar en vigor desde 09/07/2009\n" 
-                                    + "El seguro podría no estar en vigor\n" 
-                                + "</mensaje>"
-                                + "<fechaHora>25-09-2017 17:45</fechaHora>"
-                                + "<caducidad>29-09-2017 01:45</caducidad>"
-                                + "<fechaFin>(fecha vacia)</fechaFin>"
-                                + "<idPrioridad>3</idPrioridad></resumen>"
-                            + "<resumen>"
-                                + "<id>148</id>"
-                                + "<matricula>SE0815DT</matricula>"
-                                + "<nombrePista>Camara de prueba Almerimatik</nombrePista>"
-                                + "<idPista>1</idPista>"
-                                + "<idTraza>15087</idTraza>"
-                                + "<mensaje>"
-                                    + "La I.T.V. podría no estar en vigor desde 20/05/2017\n" 
-                                + "</mensaje>"
-                                + "<fechaHora>25-09-2017 17:46</fechaHora>"
-                                + "<caducidad>29-09-2017 01:46</caducidad>"
-                                + "<fechaFin>(fecha vacia)</fechaFin>"
-                                + "<idPrioridad>1</idPrioridad>"
-                            + "</resumen>"
-                            + "<resumen>"
-                                + "<id>154</id>"
-                                + "<matricula>2302FCX</matricula>"
-                                + "<nombrePista>Camara de prueba Almerimatik</nombrePista>"
-                                + "<idPista>1</idPista>"
-                                + "<idTraza>15123</idTraza>"
-                                + "<mensaje>"
-                                    + "El vehículo podría tener un embargo\n" 
-                                    + "La I.T.V. podría no estar en vigor desde 22/08/2017\n" 
-                                + "</mensaje>"
-                                + "<fechaHora>25-09-2017 17:49</fechaHora>"
-                                + "<caducidad>29-09-2017 01:49</caducidad>"
-                                + "<fechaFin>(fecha vacia)</fechaFin>"
-                                + "<idPrioridad>3</idPrioridad>"
-                            + "</resumen>"
-                            + "<resumen>"
-                                + "<id>155</id>"
-                                + "<matricula>4535HDB</matricula>"
-                                + "<nombrePista>Camara de prueba Almerimatik</nombrePista>"
-                                + "<idPista>1</idPista><idTraza>15135</idTraza>"
-                                + "<mensaje>"
-                                    + "El seguro podría no estar en vigor desde 14/08/2017\n" 
-                                + "</mensaje>"
-                                + "<fechaHora>25-09-2017 17:50</fechaHora>"
-                                + "<caducidad>29-09-2017 01:50</caducidad>"
-                                + "<fechaFin>(fecha vacia)</fechaFin>"
-                                + "<idPrioridad>2</idPrioridad>"
-                            + "</resumen>"
-                         + "</resumenes>";
-        
-        return xmlPrueba;
-    }
     
-    private void ventanaInfo(int index){
-        
-        if(listaEstado == null){
-            String xml = Ws.obtenerInfoXml(listaMatriculas);
-            listaEstado = GestorXML.obtenerListaEstados(xml);
-        }
+    private void ventanaPedido(int index){
            
-        InfoDialog infoDialog = new InfoDialog(this,false,listaResumen,listaEstado,index);
-        infoDialog.setVisible(true);
+        PedidoDialog pedidoDialog = new PedidoDialog(this,false,listaPedidos,index);
+        pedidoDialog.setVisible(true);
     }
     
     private void alertaNueva(){

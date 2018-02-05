@@ -1,0 +1,98 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is JAX-WS RI 2.1.7-b01-. --><xs:schema xmlns:tns="http://tienda_ws.almerimatik.es/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://tienda_ws.almerimatik.es/">
+
+<xs:element name="actualizar" type="tns:actualizar" />
+
+<xs:element name="actualizarResponse" type="tns:actualizarResponse" />
+
+<xs:element name="cargarPedidos" type="tns:cargarPedidos" />
+
+<xs:element name="cargarPedidosResponse" type="tns:cargarPedidosResponse" />
+
+<xs:element name="guardarPedido" type="tns:guardarPedido" />
+
+<xs:element name="guardarPedidoResponse" type="tns:guardarPedidoResponse" />
+
+<xs:element name="login" type="tns:login" />
+
+<xs:element name="loginAdmin" type="tns:loginAdmin" />
+
+<xs:element name="loginAdminResponse" type="tns:loginAdminResponse" />
+
+<xs:element name="loginResponse" type="tns:loginResponse" />
+
+<xs:element name="registrarUsuario" type="tns:registrarUsuario" />
+
+<xs:element name="registrarUsuarioResponse" type="tns:registrarUsuarioResponse" />
+
+<xs:complexType name="login">
+<xs:sequence>
+<xs:element name="nombre" type="xs:string" minOccurs="0" />
+<xs:element name="password" type="xs:string" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="loginResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:boolean" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="cargarPedidos">
+<xs:sequence>
+<xs:element name="nombre" type="xs:string" minOccurs="0" />
+<xs:element name="password" type="xs:string" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="cargarPedidosResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="actualizar">
+<xs:sequence>
+<xs:element name="fecha" type="xs:string" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="actualizarResponse">
+<xs:sequence />
+</xs:complexType>
+
+<xs:complexType name="registrarUsuario">
+<xs:sequence>
+<xs:element name="nombre" type="xs:string" minOccurs="0" />
+<xs:element name="password" type="xs:string" minOccurs="0" />
+<xs:element name="mail" type="xs:string" minOccurs="0" />
+<xs:element name="telefono" type="xs:string" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="registrarUsuarioResponse">
+<xs:sequence />
+</xs:complexType>
+
+<xs:complexType name="guardarPedido">
+<xs:sequence>
+<xs:element name="pedido" type="xs:string" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="guardarPedidoResponse">
+<xs:sequence />
+</xs:complexType>
+
+<xs:complexType name="loginAdmin">
+<xs:sequence>
+<xs:element name="nombre" type="xs:string" minOccurs="0" />
+<xs:element name="password" type="xs:string" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="loginAdminResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:boolean" />
+</xs:sequence>
+</xs:complexType>
+</xs:schema>

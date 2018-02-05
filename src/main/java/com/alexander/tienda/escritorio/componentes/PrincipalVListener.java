@@ -24,7 +24,7 @@ public class PrincipalVListener implements WindowListener{
 
     @Override
     public void windowOpened(WindowEvent e) {
-        System.out.println("Bienvenido a la aplicación de escritorio de Appolo-Traffik");
+        System.out.println("Bienvenido a la aplicación de escritorio de Gabarron");
     }
 
     @Override
