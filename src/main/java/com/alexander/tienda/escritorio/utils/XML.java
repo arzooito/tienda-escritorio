@@ -83,7 +83,7 @@ public class XML {
                pedido.setFechaRecogida(fechaRecogida);
                pedido.setHoraRecogida(horaRecogida);
                pedido.setUsuario(usuario);
-               pedido.setProductos(getProductos(doc));
+               pedido.setProductos(getProductos(elementoPedido));
 
                pedidos.add(pedido);
             }
@@ -92,15 +92,15 @@ public class XML {
         return pedidos;
     }
     
-    public static List<Producto> getProductos(Document doc) throws DOMException,NumberFormatException{
+    public static List<Producto> getProductos(Element elementoPedido) throws DOMException,NumberFormatException{
        
         List<Producto> productos = new ArrayList<>();
         
-        if(doc != null){   
+        if(elementoPedido != null){   
             int i;
             Producto prod;
             
-            NodeList nodosProducto = doc.getElementsByTagName("producto");
+            NodeList nodosProducto = elementoPedido.getChildNodes();
             Element elementoProducto = null;
             
             if(nodosProducto != null && nodosProducto.getLength()>0){

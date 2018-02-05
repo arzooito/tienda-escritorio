@@ -45,7 +45,7 @@ public class ProductoTableModel implements TableModel{
             case 4:                                                       
                 return "Unds.";
             case 5:                                                       
-                return "Subtotal";
+                return "Total";
             default:
                 return null;
         }
@@ -156,6 +156,12 @@ public class ProductoTableModel implements TableModel{
         for (i=0; i<suscriptores.size(); i++){
             ((TableModelListener)suscriptores.get(i)).tableChanged(evento);
         }     
+    }
+    
+    public Producto getProducto(int row){
+        
+        Producto prod = (Producto)datos.get(row);
+        return prod;
     }
     
     public Object rmProducto(int fila){

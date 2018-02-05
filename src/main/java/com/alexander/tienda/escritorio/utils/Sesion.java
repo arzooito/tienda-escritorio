@@ -24,6 +24,7 @@ public class Sesion {
     private static String pass;
     private static String usuario;
     private static String urlTiendaWS;
+    private static String rutaBase;
     private static String raizFotos;
     private static String posicion;
     private static String urlAdministracion;
@@ -49,6 +50,7 @@ public class Sesion {
         autologin = prop.getProperty("autologin");
         usuarioAuto = prop.getProperty("usuarioAuto");
         passwordAuto = prop.getProperty("passwordAuto");
+        rutaBase = prop.getProperty("rutaBase");
        
         
         prop.clear();
@@ -116,5 +118,14 @@ public class Sesion {
     public static String getPasswordAuto() {
         return passwordAuto;
     }
+
+    public static String getRutaBase() {
+        return rutaBase;
+    }
+
+    public static void setRutaBase(String rutaBase) {
+        Sesion.rutaBase = rutaBase;
+    }
       
+    
 }
