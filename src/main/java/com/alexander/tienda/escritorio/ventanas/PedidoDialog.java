@@ -6,19 +6,13 @@
 package com.alexander.tienda.escritorio.ventanas;
 
 import com.alexander.tienda.escritorio.WS.Ws;
-import com.alexander.tienda.escritorio.componentes.Foto;
 import com.alexander.tienda.escritorio.componentes.ProductoTableModel;
 import com.alexander.tienda.escritorio.componentes.entity.Pedido;
 import com.alexander.tienda.escritorio.componentes.entity.Producto;
 import com.alexander.tienda.escritorio.utils.Rutas;
 import com.alexander.tienda.escritorio.utils.Sesion;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -45,7 +39,7 @@ public class PedidoDialog extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         prepararTabla();
-        this.lista = lista;
+        this.lista = copiarLista(lista);
         this.index  = index;
         rellenarPedido();
     }
@@ -407,9 +401,8 @@ public class PedidoDialog extends javax.swing.JDialog {
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE, 
                 null, null, null);
-        if(confirm != 1){
-           long id = Long.parseLong(pedido.getId());
-        Ws.finalizarPedido(Sesion.getUsuario(), Sesion.getPass(),id);
+        if(confirm != 1){          
+            finalizarPedido();
         }
         
     }//GEN-LAST:event_btnFinalizarActionPerformed
@@ -540,5 +533,54 @@ public class PedidoDialog extends javax.swing.JDialog {
         }catch(Exception e){
             System.out.println("Error cargando la foto");
         }
+    }
+    
+    private void finalizarPedido(){
+        
+        if(!lista.isEmpty()){
+            long id = Long.parseLong(pedido.getId());
+            Ws.finalizarPedido(Sesion.getUsuario(), Sesion.getPass(),id);
+            lista.remove(index);
+            VentanaPrincipal vp = (VentanaPrincipal)getParent();
+            vp.rellenarModelo();
+            if((index-1) > -1 && (lista.size()) > 0){
+                index--;
+                rellenarPedido();
+            }else if(!lista.isEmpty()){
+                index=0;
+                rellenarPedido();
+            }else{
+                limpiarPagina();
+            }
+        } 
+    }
+    
+    private void limpiarPagina(){
+        
+        labIdPedido.setText("---");
+        labUsuario.setText("---");
+        labFecha.setText("---");
+        labFechaRecogida.setText("---");
+        labHoraRecogida.setText("---");
+        labTotal.setText("00,00");
+        tableModel.clear();
+        tablaProductos.repaint();
+        
+        labNombre.setText("---");
+        labMarca.setText("---");
+        labFormato.setText("---");
+        labCategoria.setText("---");
+        labSubcategoria.setText("---");
+        labPrecio.setText("00,00");
+        
+        panelFoto.removeAll();
+        panelFoto.repaint();
+    }
+    
+    private List<Pedido> copiarLista(List<Pedido> lista){
+        
+        List<Pedido> pedidos = new ArrayList<>();
+        pedidos.addAll(lista);
+        return pedidos;
     }
 }

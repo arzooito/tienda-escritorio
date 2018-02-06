@@ -4,6 +4,12 @@
 <xsd:import namespace="http://tienda_ws.almerimatik.es/" schemaLocation="http://localhost:8080/tienda_WS/ServicioTienda?xsd=1" />
 </xsd:schema>
 </types>
+<message name="getFoto">
+<part name="parameters" element="tns:getFoto" />
+</message>
+<message name="getFotoResponse">
+<part name="parameters" element="tns:getFotoResponse" />
+</message>
 <message name="login">
 <part name="parameters" element="tns:login" />
 </message>
@@ -40,7 +46,17 @@
 <message name="loginAdminResponse">
 <part name="parameters" element="tns:loginAdminResponse" />
 </message>
+<message name="finalizarPedido">
+<part name="parameters" element="tns:finalizarPedido" />
+</message>
+<message name="finalizarPedidoResponse">
+<part name="parameters" element="tns:finalizarPedidoResponse" />
+</message>
 <portType name="ServicioTienda">
+<operation name="getFoto">
+<input message="tns:getFoto" />
+<output message="tns:getFotoResponse" />
+</operation>
 <operation name="login">
 <input message="tns:login" />
 <output message="tns:loginResponse" />
@@ -65,9 +81,22 @@
 <input message="tns:loginAdmin" />
 <output message="tns:loginAdminResponse" />
 </operation>
+<operation name="finalizarPedido">
+<input message="tns:finalizarPedido" />
+<output message="tns:finalizarPedidoResponse" />
+</operation>
 </portType>
 <binding name="ServicioTiendaPortBinding" type="tns:ServicioTienda">
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document" />
+<operation name="getFoto">
+<soap:operation soapAction="" />
+<input>
+<soap:body use="literal" />
+</input>
+<output>
+<soap:body use="literal" />
+</output>
+</operation>
 <operation name="login">
 <soap:operation soapAction="" />
 <input>
@@ -114,6 +143,15 @@
 </output>
 </operation>
 <operation name="loginAdmin">
+<soap:operation soapAction="" />
+<input>
+<soap:body use="literal" />
+</input>
+<output>
+<soap:body use="literal" />
+</output>
+</operation>
+<operation name="finalizarPedido">
 <soap:operation soapAction="" />
 <input>
 <soap:body use="literal" />

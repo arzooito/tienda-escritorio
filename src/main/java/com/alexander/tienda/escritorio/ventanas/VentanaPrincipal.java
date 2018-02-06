@@ -26,7 +26,6 @@ import javax.sound.sampled.Clip;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
-import org.dipalme.policia.bd.traffik.EstadoVehiculo;
 
 /**
  *
@@ -36,7 +35,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     private DefaultListModel listModel = new DefaultListModel();
     private List<Pedido> listaPedidos = new LinkedList<>();
-    List<EstadoVehiculo> listaEstado = null;
     private PedidoListRenderer renderer = new PedidoListRenderer();
     private int anchoPantalla = java.awt.Toolkit.getDefaultToolkit().getScreenSize().width;
     private int altoPantalla = java.awt.Toolkit.getDefaultToolkit().getScreenSize().height;
@@ -285,7 +283,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JPanel panelCabecera;
     // End of variables declaration//GEN-END:variables
 
-    private void rellenarModelo(){
+    public void rellenarModelo(){
             
         String nombre = Sesion.getUsuario();
         String password = Sesion.getPass();
@@ -301,7 +299,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             if(!listaPedidos.contains(pedido)){
                 listaPedidos.add(pedido);
                 listModel.addElement(pedido);
-                listaEstado = null;
                 alertaNueva();
             }
 	}
@@ -311,8 +308,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             Pedido pedido = iterator.next();
             if(!listaAux.contains(pedido)){
                 listaTemp.add(pedido);
-                listModel.removeElement(pedido);
-                listaEstado = null;
+                boolean bool = listModel.removeElement(pedido);
+                System.out.println("el pedido "+pedido.getId()+" -> " + bool);
                 alertaCaduca();
             }
 	}
