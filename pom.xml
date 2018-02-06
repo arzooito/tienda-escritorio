@@ -31,7 +31,7 @@
                         </goals>
                         <configuration>
                             <wsdlFiles>
-                                <wsdlFile>localhost_8084/tienda_WS/ServicioTienda.wsdl</wsdlFile>
+                                <wsdlFile>localhost_8080/tienda_WS/ServicioTienda.wsdl</wsdlFile>
                             </wsdlFiles>
                             <packageName></packageName>
                             <vmArgs>
