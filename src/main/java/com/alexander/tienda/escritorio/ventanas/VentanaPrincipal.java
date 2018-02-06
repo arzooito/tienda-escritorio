@@ -308,8 +308,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             Pedido pedido = iterator.next();
             if(!listaAux.contains(pedido)){
                 listaTemp.add(pedido);
-                boolean bool = listModel.removeElement(pedido);
-                System.out.println("el pedido "+pedido.getId()+" -> " + bool);
+                listModel.removeElement(pedido);
                 alertaCaduca();
             }
 	}
